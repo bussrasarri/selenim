@@ -212,25 +212,7 @@
     font-size: 13px;
   }
 
-  .upload-btn {
-    display: inline-block;
-    background: #f06292;
-    color: white;
-    font-weight: 700;
-    padding: 14px 28px;
-    border-radius: 30px;
-    cursor: pointer;
-    user-select:none;
-    margin: 0 auto 30px auto;
-    display: block;
-    max-width: 220px;
-    text-align: center;
-    box-shadow: 0 4px 15px rgba(240, 100, 150, 0.7);
-  }
-
-  input[type="file"] {
-    display: none;
-  }
+  /* Fotoğraf yükleme butonu kaldırıldı */
 
   .footer-note {
     font-weight: 700;
@@ -347,7 +329,6 @@
       font-size: 14px;
     }
   }
-
 </style>
 </head>
 <body>
@@ -382,9 +363,34 @@
 
   <!-- 3. EKRAN -->
   <div class="photo-scene" id="screen3">
-    <label class="upload-btn" for="fotoInput">📸 Fotoğraf Ekle</label>
-    <input type="file" id="fotoInput" accept="image/*" multiple />
-    <div class="photo-grid" id="photoGrid"></div>
+    <div class="photo-grid" id="photoGrid">
+      <div class="polaroid" tabindex="0">
+<img src="https://i.hizliresim.com/l7iudql.jpg" alt="Fotoğraf 1" />
+        
+		<div class="caption" contenteditable="true" spellcheck="false" aria-label="Tarih ve Not">2023-05-12: İlk tatil</div>
+        <div class="zaman-kapsulu-label">Zaman Kapsülü</div>
+      </div>
+      <div class="polaroid" tabindex="0">
+        <img src="https://picsum.photos/id/1016/200/150" alt="Fotoğraf 2" />
+        <div class="caption" contenteditable="true" spellcheck="false" aria-label="Tarih ve Not">2023-07-23: Arkadaşlarla buluşma</div>
+        <div class="zaman-kapsulu-label">Zaman Kapsülü</div>
+      </div>
+      <div class="polaroid" tabindex="0">
+        <img src="https://picsum.photos/id/1018/200/150" alt="Fotoğraf 3" />
+        <div class="caption" contenteditable="true" spellcheck="false" aria-label="Tarih ve Not">2023-08-05: Doğa yürüyüşü</div>
+        <div class="zaman-kapsulu-label">Zaman Kapsülü</div>
+      </div>
+      <div class="polaroid" tabindex="0">
+        <img src="https://picsum.photos/id/1020/200/150" alt="Fotoğraf 4" />
+        <div class="caption" contenteditable="true" spellcheck="false" aria-label="Tarih ve Not">2023-09-10: Piknik günü</div>
+        <div class="zaman-kapsulu-label">Zaman Kapsülü</div>
+      </div>
+      <div class="polaroid" tabindex="0">
+        <img src="https://picsum.photos/id/1024/200/150" alt="Fotoğraf 5" />
+        <div class="caption" contenteditable="true" spellcheck="false" aria-label="Tarih ve Not">2023-10-01: Şehir turu</div>
+        <div class="zaman-kapsulu-label">Zaman Kapsülü</div>
+      </div>
+    </div>
     <div class="footer-note">Zaman Kapsülü 💕 <br> Seneye bir daha gel!</div>
   </div>
 
@@ -441,49 +447,8 @@
     safeMusic.play();
   });
 
-  // FOTOĞRAF EKLEME
-  const fotoInput = document.getElementById('fotoInput');
-  const photoGrid = document.getElementById('photoGrid');
-  let fotoCount = 0;
-  const maxPhotos = 50;
-
-  fotoInput.addEventListener('change', (e) => {
-    const files = Array.from(e.target.files).slice(0, maxPhotos - fotoCount);
-    files.forEach(file => {
-      const reader = new FileReader();
-      reader.onload = function(event) {
-        const div = document.createElement('div');
-        div.className = 'polaroid';
-        div.tabIndex = 0;
-
-        const img = document.createElement('img');
-        img.src = event.target.result;
-        img.alt = 'Fotoğraf';
-
-        const caption = document.createElement('div');
-        caption.className = 'caption';
-        caption.contentEditable = true;
-        caption.spellcheck = false;
-        caption.setAttribute('aria-label', 'Tarih ve Not');
-        caption.placeholder = 'Tarih ve Not ekle...';
-
-        const label = document.createElement('div');
-        label.className = 'zaman-kapsulu-label';
-        label.textContent = 'Zaman Kapsülü';
-
-        div.appendChild(img);
-        div.appendChild(caption);
-        div.appendChild(label);
-        photoGrid.appendChild(div);
-
-        fotoCount++;
-      };
-      reader.readAsDataURL(file);
-    });
-    fotoInput.value = '';
-  });
-
   // FOTOĞRAF MODAL İŞLEMLERİ
+  const photoGrid = document.getElementById('photoGrid');
   const photoModal = document.getElementById('photoModal');
   const modalImg = document.getElementById('modalImg');
   const modalCaption = document.getElementById('modalCaption');
