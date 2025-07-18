@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>Bal Tanem Zaman Kapsülü 🎀</title>
+<style>
+  body {
+    margin:0; padding:0;
+    background: linear-gradient(135deg, #ffe6f0, #f3e8ff);
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    overflow-x: hidden;
+    user-select:none;
+  }
+  button {
+    cursor: pointer;
+  }
+
+  /* KURDELELER */
+  .kurdele {
+    position: fixed;
+    font-size: 18px;
+    animation: float 5s ease-in-out infinite;
+    pointer-events: none;
+    user-select:none;
+    z-index: 50;
+  }
+  @keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+  }
+
+  /* --- 1. EKRAN --- */
+  .envelope-scene {
+    position: fixed;
+    width: 100vw; height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    background: linear-gradient(145deg, #f9c9e6, #ffe0f7);
+    border: 4px solid #d9a9ca;
+    border-radius: 20px;
+    box-shadow: 0 0 25px rgba(255, 182, 193, 0.7);
+    z-index: 30;
+  }
+  .envelope {
+    position: relative;
+    width: 320px; height: 220px;
+    background: linear-gradient(145deg, #f9c9e6, #ffe0f7);
+    border: 3px solid #cfa4bd;
+    border-radius: 14px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+    overflow: hidden;
+  }
+  .envelope::before {
+    content: '';
+    position: absolute; top:0; left:0;
+    width: 100%; height: 100%;
+    background: repeating-linear-gradient(45deg, #fff, #fff 6px, #f9d5ec 6px, #f9d5ec 12px);
+    opacity: 0.3;
+    pointer-events: none;
+    border-radius: 14px;
+  }
+
+  .prompt {
+    margin: 25px 0 0 0;
+    font-size: 26px;
+    color: #c2185b;
+    font-weight: 700;
+    user-select:none;
+  }
+
+  #evetBtn {
+    font-size: 18px;
+    padding: 12px 26px;
+    border: none;
+    border-radius: 25px;
+    font-weight: 700;
+    user-select:none;
+    background-color: #f06292;
+    color: white;
+    position: absolute;
+    width: 110px;
+    height: 44px;
+    top: 65%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: top 0.15s ease, left 0.15s ease;
+    box-shadow: 0 4px 8px rgba(240,100,150,0.7);
+    z-index: 40;
+  }
+  #hayirBtn {
+    font-size: 18px;
+    padding: 12px 26px;
+    border: none;
+    border-radius: 25px;
+    font-weight: 700;
+    user-select:none;
+    background-color: #ccc;
+    color: black;
+    position: relative;
+    width: 110px;
+    height: 44px;
+    border-radius: 25px;
+    margin-top: 30px;
+    z-index: 40;
+  }
+
+  /* --- 2. EKRAN --- */
+  .note-scene {
+    display: none;
+    position: fixed;
+    width: 100vw; height: 100vh;
+    background: linear-gradient(145deg, #fce8f5, #fff0fb);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 20;
+    padding: 0 20px;
+    box-sizing: border-box;
+    user-select:none;
+  }
+  .note-paper {
+    width: 350px;
+    min-height: 180px;
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 10px 20px rgba(220, 160, 190, 0.8);
+    border: 4px solid #f7b2dd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 30px;
+    font-size: 28px;
+    color: #c2185b;
+    font-weight: 700;
+    font-family: 'Comic Sans MS', cursive;
+    text-align: center;
+    margin-bottom: 30px;
+    user-select:none;
+  }
+  #noteNextBtn {
+    padding: 12px 30px;
+    font-size: 18px;
+    border-radius: 30px;
+    border: none;
+    background-color: #f06292;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    user-select:none;
+  }
+
+  /* --- 3. EKRAN --- */
+  .photo-scene {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: linear-gradient(135deg, #f9e4f2, #ffe6f9);
+    overflow-y: auto;
+    padding: 40px 20px 80px 20px;
+    box-sizing: border-box;
+    z-index: 10;
+  }
+
+  .photo-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 22px;
+    max-width: 1200px;
+    margin: 0 auto 40px auto;
+  }
+
+  .polaroid {
+    background: white;
+    border: 6px solid white;
+    border-bottom: 40px solid white;
+    width: 140px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+    border-radius: 10px;
+    text-align: center;
+    position: relative;
+    user-select:none;
+    cursor: pointer;
+  }
+  .polaroid img {
+    width: 100%;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 8px 8px 0 0;
+    box-shadow: 0 0 12px #f9c4de;
+  }
+  .caption {
+    font-size: 12px;
+    color: #555;
+    margin: 6px 8px 0 8px;
+    min-height: 28px;
+    outline: none;
+    user-select:text;
+  }
+  .caption:empty:before {
+    content: 'Tarih ve Not ekle...';
+    color: #ccc;
+  }
+  .zaman-kapsulu-label {
+    font-weight: bold;
+    color: #d63384;
+    margin: 6px 0 8px 0;
+    font-size: 13px;
+  }
+
+  .upload-btn {
+    display: inline-block;
+    background: #f06292;
+    color: white;
+    font-weight: 700;
+    padding: 14px 28px;
+    border-radius: 30px;
+    cursor: pointer;
+    user-select:none;
+    margin: 0 auto 30px auto;
+    display: block;
+    max-width: 220px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(240, 100, 150, 0.7);
+  }
+
+  input[type="file"] {
+    display: none;
+  }
+
+  .footer-note {
+    font-weight: 700;
+    color: #d63384;
+    font-size: 20px;
+    text-align: center;
+    border: 3px solid #f9c4de;
+    background: #fde3f3;
+    border-radius: 30px;
+    padding: 18px 20px;
+    max-width: 350px;
+    margin: 0 auto 30px auto;
+    user-select:none;
+  }
+
+  /* FOTOĞRAF BÜYÜTME MODAL */
+  #photoModal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.75);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  #photoModalContent {
+    background: white;
+    border-radius: 20px;
+    max-width: 95vw;
+    max-height: 80vh;
+    box-shadow: 0 10px 30px rgba(255,182,193,0.8);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  #modalImg {
+    width: 100%;
+    max-height: 60vh;
+    object-fit: contain;
+    border-radius: 20px 20px 0 0;
+  }
+  #modalCaption {
+    padding: 12px 20px;
+    font-size: 16px;
+    color: #c2185b;
+    min-height: 40px;
+    outline: none;
+    user-select:text;
+  }
+  #modalCaption:empty:before {
+    content: 'Buraya tarih ve not ekle...';
+    color: #ccc;
+  }
+  #modalHeader {
+    font-weight: 800;
+    color: #d63384;
+    font-size: 22px;
+    text-align: center;
+    padding: 12px 0;
+    background: #fde3f3;
+    user-select:none;
+  }
+  #modalCloseBtn {
+    position: absolute;
+    top: 15px; right: 20px;
+    font-size: 30px;
+    color: #d63384;
+    cursor: pointer;
+    user-select:none;
+    font-weight: 700;
+    background: transparent;
+    border: none;
+  }
+
+  /* Responsive Mobil */
+  @media(max-width: 480px) {
+    .envelope {
+      width: 280px; height: 190px;
+    }
+    .prompt {
+      font-size: 22px;
+    }
+    #evetBtn, #hayirBtn {
+      width: 100px; height: 40px; font-size: 16px;
+    }
+    .note-paper {
+      width: 90vw;
+      font-size: 22px;
+      padding: 15px 20px;
+    }
+    #noteNextBtn {
+      padding: 10px 24px;
+      font-size: 16px;
+    }
+    .polaroid {
+      width: 120px;
+    }
+    .polaroid img {
+      height: 90px;
+    }
+    .footer-note {
+      font-size: 16px;
+      padding: 14px 15px;
+      max-width: 90vw;
+    }
+    #modalHeader {
+      font-size: 18px;
+    }
+    #modalCaption {
+      font-size: 14px;
+    }
+  }
+
+</style>
+</head>
+<body>
+
+  <!-- KURDELELER -->
+  <script>
+    function createKurdele() {
+      const k = document.createElement('div');
+      k.className = 'kurdele';
+      k.style.left = Math.random() * 100 + 'vw';
+      k.style.top = Math.random() * 100 + 'vh';
+      k.style.animationDuration = (3 + Math.random()*3) + 's';
+      k.textContent = '🎀';
+      document.body.appendChild(k);
+    }
+    for(let i=0; i<40; i++) createKurdele();
+  </script>
+
+  <!-- 1. EKRAN -->
+  <div class="envelope-scene" id="screen1">
+    <div class="envelope"></div>
+    <div class="prompt">Hayatımmm, açmak ister misin? 💌</div>
+    <button id="evetBtn">Evet</button>
+    <button id="hayirBtn">Hayır</button>
+  </div>
+
+  <!-- 2. EKRAN -->
+  <div class="note-scene" id="screen2">
+    <div class="note-paper" id="notePaper">İyi ki doğdun bal tanem, bir tanem! 💖</div>
+    <button id="noteNextBtn">İleri ➡️</button>
+  </div>
+
+  <!-- 3. EKRAN -->
+  <div class="photo-scene" id="screen3">
+    <label class="upload-btn" for="fotoInput">📸 Fotoğraf Ekle</label>
+    <input type="file" id="fotoInput" accept="image/*" multiple />
+    <div class="photo-grid" id="photoGrid"></div>
+    <div class="footer-note">Zaman Kapsülü 💕 <br> Seneye bir daha gel!</div>
+  </div>
+
+  <!-- FOTOĞRAF MODAL -->
+  <div id="photoModal">
+    <button id="modalCloseBtn" title="Kapat">×</button>
+    <div id="modalHeader">Zaman Kapsülü</div>
+    <div id="photoModalContent">
+      <img id="modalImg" src="" alt="Fotoğraf" />
+      <div id="modalCaption" contenteditable="true" spellcheck="false" placeholder="Buraya tarih ve not ekle..."></div>
+    </div>
+  </div>
+
+  <!-- MÜZİK -->
+  <audio id="safeMusic" loop>
+    <source src="https://cdn.pixabay.com/audio/2022/03/02/audio_a5f9fa4b6b.mp3" type="audio/mpeg" />
+  </audio>
+
+<script>
+  // 1. EKRAN HAREKETLİ EVET BUTONU
+  const evetBtn = document.getElementById('evetBtn');
+  const hayirBtn = document.getElementById('hayirBtn');
+  const screen1 = document.getElementById('screen1');
+  const screen2 = document.getElementById('screen2');
+  const screen3 = document.getElementById('screen3');
+  const safeMusic = document.getElementById('safeMusic');
+  const noteNextBtn = document.getElementById('noteNextBtn');
+
+  // Evet butonu hızlı hareket
+  function moveEvetBtn() {
+    const btn = evetBtn;
+    const maxX = window.innerWidth - btn.offsetWidth - 10;
+    const maxY = window.innerHeight - btn.offsetHeight - 10;
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+    btn.style.left = x + 'px';
+    btn.style.top = y + 'px';
+  }
+  let moveInterval = setInterval(moveEvetBtn, 100);
+
+  function openEnvelope() {
+    clearInterval(moveInterval);
+    screen1.style.display = 'none';
+    screen2.style.display = 'flex';
+  }
+
+  evetBtn.addEventListener('click', openEnvelope);
+  hayirBtn.addEventListener('click', openEnvelope);
+
+  // 2. EKRANDAN 3. EKRANA GEÇİŞ
+  noteNextBtn.addEventListener('click', () => {
+    screen2.style.display = 'none';
+    screen3.style.display = 'block';
+    safeMusic.play();
+  });
+
+  // FOTOĞRAF EKLEME
+  const fotoInput = document.getElementById('fotoInput');
+  const photoGrid = document.getElementById('photoGrid');
+  let fotoCount = 0;
+  const maxPhotos = 50;
+
+  fotoInput.addEventListener('change', (e) => {
+    const files = Array.from(e.target.files).slice(0, maxPhotos - fotoCount);
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const div = document.createElement('div');
+        div.className = 'polaroid';
+        div.tabIndex = 0;
+
+        const img = document.createElement('img');
+        img.src = event.target.result;
+        img.alt = 'Fotoğraf';
+
+        const caption = document.createElement('div');
+        caption.className = 'caption';
+        caption.contentEditable = true;
+        caption.spellcheck = false;
+        caption.setAttribute('aria-label', 'Tarih ve Not');
+        caption.placeholder = 'Tarih ve Not ekle...';
+
+        const label = document.createElement('div');
+        label.className = 'zaman-kapsulu-label';
+        label.textContent = 'Zaman Kapsülü';
+
+        div.appendChild(img);
+        div.appendChild(caption);
+        div.appendChild(label);
+        photoGrid.appendChild(div);
+
+        fotoCount++;
+      };
+      reader.readAsDataURL(file);
+    });
+    fotoInput.value = '';
+  });
+
+  // FOTOĞRAF MODAL İŞLEMLERİ
+  const photoModal = document.getElementById('photoModal');
+  const modalImg = document.getElementById('modalImg');
+  const modalCaption = document.getElementById('modalCaption');
+  const modalCloseBtn = document.getElementById('modalCloseBtn');
+
+  // Fotoğraf polaroidine tıklandığında modal açılır
+  photoGrid.addEventListener('click', e => {
+    const polaroid = e.target.closest('.polaroid');
+    if (!polaroid) return;
+
+    const imgSrc = polaroid.querySelector('img').src;
+    const captionText = polaroid.querySelector('.caption').innerText || '';
+
+    modalImg.src = imgSrc;
+    modalCaption.innerText = captionText;
+    photoModal.style.display = 'flex';
+
+    // Modal caption değişirse polaroid caption güncellenir
+    modalCaption.oninput = () => {
+      polaroid.querySelector('.caption').innerText = modalCaption.innerText;
+    };
+  });
+
+  modalCloseBtn.addEventListener('click', () => {
+    photoModal.style.display = 'none';
+  });
+
+  // Modal dışına tıklayınca kapanması
+  photoModal.addEventListener('click', (e) => {
+    if (e.target === photoModal) {
+      photoModal.style.display = 'none';
+    }
+  });
+
+  // Klavyeden ESC ile kapatma
+  document.addEventListener('keydown', e => {
+    if(e.key === "Escape" && photoModal.style.display === 'flex') {
+      photoModal.style.display = 'none';
+    }
+  });
+</script>
+
+</body>
+</html>
